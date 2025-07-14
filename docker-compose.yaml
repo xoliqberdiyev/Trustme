@@ -55,4 +55,20 @@ services:
     networks:
       - trustme
     restart: always
-    image: redis
+    image: redis:latest
+
+  celery:
+    networks:
+      - trustme
+    build: 
+      context: .
+      dockerfile: ./docker/Dockerfile.web
+    command: celery -A config worker --loglevel=info
+    volumes:
+      - .:/code
+    depends_on:
+      - redis
+      - web
+    environment:
+      CELERY_BROKER_URL: ${REDIS_URL} 
+

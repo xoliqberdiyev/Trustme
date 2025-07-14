@@ -34,7 +34,9 @@ APPS = [
 ]
 
 PACKAGES = [
-
+    'drf_spectacular',
+    'rest_framework',
+    'rest_framework_simplejwt',
 ]
 
 INSTALLED_APPS = []
@@ -131,3 +133,10 @@ MEDIA_ROOT = BASE_DIR / 'resources/media/'
 # https://docs.djangoproject.com/en/5.2/ref/settings/#default-auto-field
 
 DEFAULT_AUTO_FIELD = 'django.db.models.BigAutoField'
+
+AUTH_USER_MODEL = 'accounts.User'
+
+from config.conf.drf_spectacular import *
+from config.conf.rest_framework import *
+from config.conf.simplejwt import *
+from config.conf.celery import *

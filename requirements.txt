@@ -3,3 +3,11 @@ gunicorn
 uvicorn
 psycopg2
 django-environ==0.12.0
+pillow
+drf-spectacular==0.28.0
+djangorestframework_simplejwt==5.5.0
+djangorestframework
+requests
+celery==5.5.3
+redis==6.2.0
+django-redis==6.0.0
