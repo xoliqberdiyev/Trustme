@@ -2,3 +2,4 @@ django==5.2
 gunicorn
 uvicorn
 psycopg2
+django-environ==0.12.0
