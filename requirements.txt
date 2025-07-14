@@ -1,0 +1,4 @@
+django==5.2
+gunicorn
+uvicorn
+psycopg2

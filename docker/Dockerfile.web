@@ -1,0 +1,25 @@
+FROM python:3.12
+
+WORKDIR /code
+
+RUN apt-get update && \
+    apt-get install -y \
+    gdal-bin \
+    libgdal-dev \
+    python3-gdal \
+    libgeos-dev \
+    libproj-dev \
+    g++ \
+    make \
+    wkhtmltopdf && \
+    apt-get clean && \
+    rm -rf /var/lib/apt/lists/*
+
+
+RUN gdalinfo --version
+
+COPY . .
+
+RUN --mount=type=cache,target=/root/.cache/pip python3 -m pip install -r requirements.txt
+
+CMD ["sh", "./resources/scripts/entrypoint.sh"]
