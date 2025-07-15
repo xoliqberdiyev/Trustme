@@ -25,6 +25,7 @@ class LoginApiView(generics.GenericAPIView):
             user = serializer.validated_data.get('user')
             tokens = RefreshToken.for_user(user)
             return Response({'access_token': str(tokens.access_token), 'refresh_token': str(tokens), 'role': user.role}, status=status.HTTP_200_OK)
+        return Response(serializer.errors, status=status.HTTP_404_NOT_FOUND)
         
 
 @extend_schema(tags=['auth'])
