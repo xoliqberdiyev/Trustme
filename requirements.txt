@@ -13,3 +13,5 @@ redis==6.2.0
 django-redis==6.0.0
 pytest
 pytest-django
+django-cacheops==7.2
+django-unfold==0.62.0
