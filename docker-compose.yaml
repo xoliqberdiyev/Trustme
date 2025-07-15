@@ -31,11 +31,29 @@ services:
     command: sh resources/scripts/entrypoint.sh
     environment:
       - PYTHONPYCACHEPREFIX=/var/cache/pycache
+      - REDIS_URL=redis://redis:6379/0
+      - CELERY_BROKER_URL=redis://redis:6379/0
+      - CELERY_BACKEND_URL=redis://redis:6379/0
+
+
     volumes:
       - './:/code'
     depends_on:
       - db
       - redis
+
+  celery:
+    build:
+      context: .
+      dockerfile: ./docker/Dockerfile.web
+    command: celery -A config worker --loglevel=info
+    environment:
+      - CELERY_BROKER_URL=redis://redis:6379/0
+    depends_on:
+      - redis
+      - web
+    networks:
+      - trustme
 
   db:
     image: postgres:16
@@ -56,19 +74,7 @@ services:
       - trustme
     restart: always
     image: redis:latest
-
-  celery:
-    networks:
-      - trustme
-    build: 
-      context: .
-      dockerfile: ./docker/Dockerfile.web
-    command: celery -A config worker --loglevel=info
-    volumes:
-      - .:/code
-    depends_on:
-      - redis
-      - web
-    environment:
-      CELERY_BROKER_URL: ${REDIS_URL} 
+    ports:
+      - 6379:6379
+    
 

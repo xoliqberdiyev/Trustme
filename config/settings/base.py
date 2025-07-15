@@ -140,3 +140,4 @@ from config.conf.drf_spectacular import *
 from config.conf.rest_framework import *
 from config.conf.simplejwt import *
 from config.conf.celery import *
+from config.conf.redis import *
