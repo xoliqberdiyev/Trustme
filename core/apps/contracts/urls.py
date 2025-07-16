@@ -9,6 +9,7 @@ urlpatterns = [
         [
             path('create/', contract_views.ContractCreateApiView.as_view(), name='create-contract'),
             path('list/', contract_views.ContractListApiView.as_view(), name='list-contract'),
+            path('<uuid:id>/', contract_views.ContractDetailApiView.as_view(), name='detail-contract'),
         ]
     )),
     path('contract_side/', include([

@@ -5,10 +5,7 @@ from django.contrib.postgres.fields import ArrayField
 from core.apps.shared.models.base import BaseModel
 from core.apps.contracts.enums.contract import SIDES, STATUS
 from core.apps.contracts.enums.contract_side import ROLE
-from core.apps.contracts.enums.contract_file import FILE_TYPE, USER_PERMISSION
 from core.apps.contracts.enums.contract_signature import SIGNATURE_TYPE, SIGNATURE_STATUS
-from core.apps.contracts.enums.contract_notification import NOTIFICATION_EVENT, TYPE_MESSAGE, TYPE_NOTIFICATION
-from core.apps.accounts.validators.user import phone_regex
 
 
 class Contract(BaseModel):
@@ -23,6 +20,8 @@ class Contract(BaseModel):
     attach_file = models.BooleanField(default=False)
     add_folder = models.BooleanField(default=False)
     add_notification = models.BooleanField(default=False)
+
+    company = models.ForeignKey(get_user_model(), on_delete=models.CASCADE, related_name='c')
 
     def __str__(self):
         return f'{self.name}'
@@ -54,49 +53,6 @@ class ContractSide(BaseModel):
         db_table = 'contracts_sides'
         unique_together = ['contract', 'user']
 
-
-class ContractFile(BaseModel):
-    name = models.CharField(max_length=150)
-    file_type = ArrayField(
-        models.CharField(max_length=10, choices=FILE_TYPE),
-        default=list,
-        blank=True
-    )
-    user_permission = ArrayField(
-        models.CharField(max_length=10, choices=USER_PERMISSION),
-        default=list,
-        blank=True
-    )
-    contract = models.ForeignKey(Contract, on_delete=models.CASCADE, related_name='contract_files')
-
-    def __str__(self):
-        return f'{self.name} - {self.contract}'
-    
-    class Meta:
-        verbose_name = 'contract file'
-        verbose_name_plural = 'contract files'
-        db_table = 'contract_files'
-
-
-class ContractNotification(BaseModel):
-    notification_event = models.CharField(choices=NOTIFICATION_EVENT, max_length=24)
-    type_notification = models.CharField(choices=TYPE_NOTIFICATION, max_length=8) 
-    type_message = models.CharField(null=True, blank=True, choices=TYPE_MESSAGE, max_length=8) 
-
-    message = models.CharField(max_length=160)
-    time = models.TimeField(null=True, blank=True)
-    date = models.DateField(null=True, blank=True)
-    
-    contract = models.ForeignKey(Contract, on_delete=models.CASCADE, related_name="contract_notifications")
-
-    def __str__(self):
-        return f'{self.type_notification} - {self.contract}'
-    
-    class Meta:
-        verbose_name = 'contract notification'
-        verbose_name_plural = 'contract notifications'
-        db_table = 'contract_notifications'
-    
 
 class ContractSignature(BaseModel):
     contract = models.ForeignKey(Contract, on_delete=models.CASCADE, related_name='contract_signatures')

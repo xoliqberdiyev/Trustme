@@ -3,7 +3,7 @@ from django.db import transaction
 from rest_framework import serializers
 
 from core.apps.contracts.models.contract import Contract
-from core.apps.contracts.serializers.contract_side import ContractSideCreateSerializer
+from core.apps.contracts.serializers.contract_side import ContractSideCreateSerializer, ContractSideListSerializer
 
 
 class ContractCreateSerializer(serializers.Serializer):
@@ -18,6 +18,7 @@ class ContractCreateSerializer(serializers.Serializer):
 
     def create(self, validated_data):
         with transaction.atomic():
+            user = self.context.get('user')
             contract = Contract.objects.create(
                 file=validated_data.pop('file'),
                 contract_number=validated_data.pop('contract_number'),
@@ -27,6 +28,7 @@ class ContractCreateSerializer(serializers.Serializer):
                 attach_file=validated_data.pop('attach_file'),
                 add_folder=validated_data.pop('add_folder'),
                 add_notification=validated_data.pop('add_notification'),
+                company=user
             )
             return contract.id
 
@@ -36,4 +38,14 @@ class ContractListSerializer(serializers.ModelSerializer):
         model = Contract 
         fields = [
             'id', 'name', 'file', 'contract_number', 'sides', 'face_id', 'add_folder', 'attach_file', 'add_notification', 'created_at'
+        ]
+
+
+class ContractDetailSerializer(serializers.ModelSerializer):
+    contract_sides = ContractSideListSerializer(many=True)
+
+    class Meta:
+        model = Contract
+        fields = [
+            'id', 'name', 'file', 'contract_number', 'contract_sides',
         ]

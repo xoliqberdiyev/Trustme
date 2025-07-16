@@ -1,6 +1,6 @@
 from django.contrib import admin
 
-from core.apps.contracts.models.contract import Contract, ContractFile, ContractNotification,ContractSide, ContractSignature
+from core.apps.contracts.models.contract import Contract, ContractSide, ContractSignature
 
 
 @admin.register(Contract)
@@ -11,13 +11,6 @@ class ContractAdmin(admin.ModelAdmin):
 class ContractSideAdmin(admin.ModelAdmin):
     list_display = ['id', 'full_name']
 
-@admin.register(ContractFile)
-class ContractFileAdmin(admin.ModelAdmin):
-    list_display = ['id', 'name']
-
-@admin.register(ContractNotification)
-class ContractNotificationAdmin(admin.ModelAdmin):
-    list_display = ['id', 'message', 'contract']
 
 @admin.register(ContractSignature)
 class ContractSignatureAdmin(admin.ModelAdmin):

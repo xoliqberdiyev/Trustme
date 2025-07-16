@@ -66,7 +66,7 @@ class ChoiseRoleSerializer(serializers.Serializer):
 
     def validate(self, data):
         try:
-            user = User.objects.get(phone=data.get("phone"), is_active=False)
+            user = User.objects.get(phone=data.get("phone"), is_active=True)
         except User.DoesNotExist:
             raise serializers.ValidationError({"detail": "user not found"})
         data['user'] = user

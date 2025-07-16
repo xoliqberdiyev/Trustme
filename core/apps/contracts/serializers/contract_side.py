@@ -23,3 +23,10 @@ class ContractSideCreateSerializer(serializers.Serializer):
             raise serializers.ValidationError({'detail': 'Contract not found!'})
         return data
     
+
+class ContractSideListSerializer(serializers.ModelSerializer):
+    class Meta:
+        model = ContractSide
+        fields = [
+            'id', 'full_name', 'user'
+        ]

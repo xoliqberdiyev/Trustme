@@ -32,3 +32,12 @@ class ContractListApiView(generics.ListAPIView):
 
     def get_queryset(self):
         return Contract.objects.filter(contract_sides__user=self.request.user)
+
+
+class ContractDetailApiView(views.APIView):
+    def get(self, request, id):
+        contract = Contract.objects.filter(id=id, contract_sides__user=request.user).prefetch_related('contract_sides').first()
+        if not contract:
+            return Response({'success': False, "message": 'contract not found'}, status=404)
+        serializer = contract_serializer.ContractDetailSerializer(contract)
+        return Response(serializer.data, status=200)
