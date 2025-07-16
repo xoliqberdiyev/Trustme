@@ -17,17 +17,15 @@ class Contract(BaseModel):
     name = models.CharField(max_length=200)
     
     sides = models.CharField(max_length=13, choices=SIDES) # choices
-    status = models.CharField(max_length=15, choices=STATUS) # choices
+    status = models.CharField(max_length=15, choices=STATUS, default='created') # choices
  
     face_id = models.BooleanField(default=False)
     attach_file = models.BooleanField(default=False)
     add_folder = models.BooleanField(default=False)
     add_notification = models.BooleanField(default=False)
 
-    user = models.ForeignKey(get_user_model(), on_delete=models.CASCADE, related_name='contracts')
-
     def __str__(self):
-        return f'{self.name} - {self.user}'
+        return f'{self.name}'
     
     class Meta:
         verbose_name = 'contract'
@@ -54,6 +52,7 @@ class ContractSide(BaseModel):
         verbose_name = 'contract side'
         verbose_name_plural = 'contract sides'
         db_table = 'contracts_sides'
+        unique_together = ['contract', 'user']
 
 
 class ContractFile(BaseModel):
@@ -103,8 +102,8 @@ class ContractSignature(BaseModel):
     contract = models.ForeignKey(Contract, on_delete=models.CASCADE, related_name='contract_signatures')
     user = models.ForeignKey(get_user_model(), on_delete=models.CASCADE, related_name='contract_users')
 
-    status = models.CharField(max_length=20, choices=SIGNATURE_STATUS) # choices
-    signature_type = models.CharField(max_length=20, choices=SIGNATURE_TYPE) # choices
+    status = models.CharField(max_length=20, choices=SIGNATURE_STATUS, default='organized') 
+    signature_type = models.CharField(max_length=20, choices=SIGNATURE_TYPE, null=True, blank=True)
 
     is_signature = models.BooleanField(default=False)
 
@@ -115,3 +114,4 @@ class ContractSignature(BaseModel):
         verbose_name = 'contract signature'
         verbose_name = 'contract signatures'
         db_table = 'contract_signatures'
+        unique_together = ['contract', 'user']

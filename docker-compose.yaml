@@ -54,6 +54,7 @@ services:
       - web
     networks:
       - trustme
+    restart: always
 
   db:
     image: postgres:16

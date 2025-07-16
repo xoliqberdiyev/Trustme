@@ -42,7 +42,7 @@ APPS = [
 ]
 
 PACKAGES = [
-    'drf_spectacular',
+    'drf_yasg',
     'rest_framework',
     'rest_framework_simplejwt',
     'cacheops',
@@ -146,7 +146,7 @@ DEFAULT_AUTO_FIELD = 'django.db.models.BigAutoField'
 
 AUTH_USER_MODEL = 'accounts.User'
 
-from config.conf.drf_spectacular import *
+from config.conf.drf_yasg import *
 from config.conf.rest_framework import *
 from config.conf.simplejwt import *
 from config.conf.celery import *

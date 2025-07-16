@@ -1,6 +1,5 @@
 
 UNFOLD = {
-    "DASHBOARD_CALLBACK": "django_core.views.dashboard_callback",
     "SITE_TITLE": None,
     "SHOW_LANGUAGES": True,
     "SITE_HEADER": None,

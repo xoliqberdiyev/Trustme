@@ -6,14 +6,12 @@ from rest_framework.response import Response
 
 from rest_framework_simplejwt.tokens import RefreshToken
 
-from drf_spectacular.utils import extend_schema
-
 from core.apps.accounts.serializers import auth as auth_serializer
 from core.apps.accounts.models.verification_code import VerificationCode
 
 User = get_user_model()
 
-@extend_schema(tags=['auth'])
+
 class LoginApiView(generics.GenericAPIView):
     serializer_class = auth_serializer.LoginSerializer
     queryset = User.objects.all()
@@ -28,14 +26,12 @@ class LoginApiView(generics.GenericAPIView):
         return Response(serializer.errors, status=status.HTTP_404_NOT_FOUND)
         
 
-@extend_schema(tags=['auth'])
 class RegisterApiView(generics.CreateAPIView):
     serializer_class = auth_serializer.RegisterSerializer
     queryset = User.objects.all()
     permission_classes = []
 
 
-@extend_schema(tags=['auth'])
 class ConfirUserApiView(generics.GenericAPIView):
     serializer_class = auth_serializer.ConfirmUserSerializer
     queryset = User.objects.all()
@@ -61,13 +57,11 @@ class ConfirUserApiView(generics.GenericAPIView):
         return Response({"success": False, "message": serializer.errors}, status=status.HTTP_400_BAD_REQUEST)
 
 
-@extend_schema(tags=['auth'])
 class ChoiceUserRoleApiView(generics.GenericAPIView):
     serializer_class = auth_serializer.ChoiseRoleSerializer
     queryset = User.objects.all()
     permission_classes = []
 
-    @extend_schema(description="roles -> PP(physcal person) or LP(legal person)")
     def post(self, request):
         serializer = self.serializer_class(data=request.data)
         if serializer.is_valid():
@@ -79,7 +73,6 @@ class ChoiceUserRoleApiView(generics.GenericAPIView):
         return Response({'success': False, "message": serializer.errors}, status=status.HTTP_400_BAD_REQUEST)
 
 
-@extend_schema(tags=['auth'])
 class CompliteUserProfileApiView(generics.GenericAPIView):
     serializer_class = auth_serializer.CompliteUserProfileSerializer
     queryset = User.objects.all()
@@ -95,4 +88,3 @@ class CompliteUserProfileApiView(generics.GenericAPIView):
                 return Response({'access_token': str(token.access_token), "refresh_token": str(token), "role": user.role}, status=status.HTTP_200_OK)
             return Response({'success': False, 'message': serializer.errors}, status=status.HTTP_400_BAD_REQUEST)
         return Response({'success': False, "message": "User not found"}, status=status.HTTP_404_NOT_FOUND)
-        
