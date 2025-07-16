@@ -48,6 +48,7 @@ class ConfirUserApiView(generics.GenericAPIView):
                     return Response({"success": True, "message": "code is expired"}, status=status.HTTP_400_BAD_REQUEST)
                 if code.is_verify:
                     return Response({"success": True, "message": "code is verified"}, status=status.HTTP_400_BAD_REQUEST)
+                user.is_active = True
                 user.save()
                 code.is_verify = True
                 code.is_expired = True

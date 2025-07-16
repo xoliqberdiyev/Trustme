@@ -28,7 +28,7 @@ class ContractCreateSerializer(serializers.Serializer):
                 add_folder=validated_data.pop('add_folder'),
                 add_notification=validated_data.pop('add_notification'),
             )
-            return contract
+            return contract.id
 
 
 class ContractListSerializer(serializers.ModelSerializer):

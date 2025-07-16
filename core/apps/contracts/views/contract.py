@@ -14,10 +14,21 @@ class ContractCreateApiView(generics.CreateAPIView):
     def get_serializer_context(self):
         return {'user': self.request.user}
     
+    def create(self, request, *args, **kwargs):
+        serializer = self.get_serializer(data=request.data)
+        serializer.is_valid(raise_exception=True)
+        contract = serializer.save()
+
+        return Response({
+            "success": True,
+            "message": "Contract successfully created",
+            "contract_id": str(contract)
+        }, status=status.HTTP_201_CREATED)
+
 
 class ContractListApiView(generics.ListAPIView):
     serializer_class = contract_serializer.ContractListSerializer
     queryset = Contract.objects.all()
 
     def get_queryset(self):
-        return super().get_queryset()
+        return Contract.objects.filter(contract_sides__user=self.request.user)

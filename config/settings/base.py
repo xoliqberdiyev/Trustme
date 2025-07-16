@@ -27,13 +27,13 @@ DJANGO_APPS = [
     'django.contrib.staticfiles',
 ]
 
-DJANGO_UNFOLD = [
-    "unfold",
-    "unfold.contrib.filters",
-    "unfold.contrib.forms",
-    "unfold.contrib.guardian",
-    "unfold.contrib.simple_history",
-]
+# DJANGO_UNFOLD = [
+#     "unfold",
+#     "unfold.contrib.filters",
+#     "unfold.contrib.forms",
+#     "unfold.contrib.guardian",
+#     "unfold.contrib.simple_history",
+# ]
 
 APPS = [
     'core.apps.shared',
@@ -49,7 +49,7 @@ PACKAGES = [
 ]
 
 INSTALLED_APPS = []
-INSTALLED_APPS += DJANGO_UNFOLD
+# INSTALLED_APPS += DJANGO_UNFOLD
 INSTALLED_APPS += DJANGO_APPS
 INSTALLED_APPS += PACKAGES
 INSTALLED_APPS += APPS
@@ -151,4 +151,4 @@ from config.conf.rest_framework import *
 from config.conf.simplejwt import *
 from config.conf.celery import *
 from config.conf.redis import *
-from config.conf.unfold import *
+# from config.conf.unfold import *
