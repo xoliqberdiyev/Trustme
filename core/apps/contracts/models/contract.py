@@ -1,6 +1,9 @@
+import random
+from datetime import timedelta
+
 from django.db import models
 from django.contrib.auth import get_user_model
-from django.contrib.postgres.fields import ArrayField
+from django.utils import timezone 
 
 from core.apps.shared.models.base import BaseModel
 from core.apps.contracts.enums.contract import SIDES, STATUS
@@ -56,7 +59,7 @@ class ContractSide(BaseModel):
 
 class ContractSignature(BaseModel):
     contract = models.ForeignKey(Contract, on_delete=models.CASCADE, related_name='contract_signatures')
-    user = models.ForeignKey(get_user_model(), on_delete=models.CASCADE, related_name='contract_users')
+    contract_side = models.OneToOneField(ContractSide, on_delete=models.CASCADE, related_name='contract_signatures')
 
     status = models.CharField(max_length=20, choices=SIGNATURE_STATUS, default='organized') 
     signature_type = models.CharField(max_length=20, choices=SIGNATURE_TYPE, null=True, blank=True)
@@ -64,10 +67,34 @@ class ContractSignature(BaseModel):
     is_signature = models.BooleanField(default=False)
 
     def __str__(self):
-        return f'{self.user} user signature for {self.contract} contract'
+        return f'{self.contract_side} user signature for {self.contract} contract'
+    
+    def generate_code(self):
+        code = ''.join([str(random.randint(1, 9) % 10) for _ in range(4)])
+        ContractSignatureCode.objects.create(
+            code=code,
+            signature=self,
+            expiration_time = timezone.now() + timedelta(minutes=2)
+        )
+        return code
     
     class Meta:
         verbose_name = 'contract signature'
-        verbose_name = 'contract signatures'
+        verbose_name_plural = 'contract signatures'
         db_table = 'contract_signatures'
-        unique_together = ['contract', 'user']
+        unique_together = ['contract', 'contract_side']
+
+
+class ContractSignatureCode(BaseModel):
+    code = models.PositiveSmallIntegerField()
+    signature = models.ForeignKey(ContractSignature, on_delete=models.CASCADE, related_name='signature_codes')
+    expiration_time = models.DateTimeField()
+
+    def __str__(self):
+        return f'{self.code} - {self.signature}'
+
+    class Meta:
+        verbose_name = 'contract signature code'
+        verbose_name_plural = 'contract signature codes'
+        db_table = 'contract_signature_codes'
+    

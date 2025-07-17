@@ -14,5 +14,6 @@ env = environ.Env(
     DB_PORT=(int, 5432),
     DEBUG=(bool, False),
     ALLOWED_HOSTS=(list, ['localhost', '127.0.0.1']),
-    SECRET_KEY=(str)
+    SECRET_KEY=(str),
+    BOT_TOKEN=(str)
 )

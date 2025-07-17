@@ -26,7 +26,7 @@ class User(BaseModel, AbstractUser):
         return self.phone
     
     def generate_code(self):
-        code = ''.join([str(random.randint(0, 100) % 10) for _ in range(4)])
+        code = ''.join([str(random.randint(1, 100) % 10) for _ in range(4)])
         expiration_time = timezone.now() + datetime.timedelta(minutes=2)
         VerificationCode.objects.create(
             code=code,

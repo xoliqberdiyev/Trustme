@@ -2,6 +2,7 @@ from django.urls import path, include
 
 from core.apps.contracts.views import contract as contract_views
 from core.apps.contracts.views import contract_side as contract_side_views
+from core.apps.contracts.views import contract_signature as contract_signature_views
 
 
 urlpatterns = [
@@ -14,6 +15,12 @@ urlpatterns = [
     )),
     path('contract_side/', include([
             path('create/', contract_side_views.ConstartSideCreateApiView.as_view(), name='contract-side-create'),
+        ]
+    )),
+    path('contract_signature/', include(
+        [
+            path('send_signature_code/<uuid:signature_id>/', contract_signature_views.SendContractSignatureCodeApiView.as_view(), name='send-signature-code'),
+            path('sign_contract/', contract_signature_views.SigningContractApiView.as_view(), name='sign-contract'),
         ]
     ))
 ]

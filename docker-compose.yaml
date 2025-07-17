@@ -78,4 +78,10 @@ services:
     ports:
       - 6379:6379
     
-
+  bot:
+    build: 
+      context: /home/behruz/bots/send-verification-code
+      dockerfile: Dockerfile
+    volumes:
+      - /home/behruz/bots/send-verification-code:/bot
+    restart: unless-stopped

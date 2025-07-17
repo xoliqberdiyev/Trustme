@@ -47,5 +47,5 @@ class ContractDetailSerializer(serializers.ModelSerializer):
     class Meta:
         model = Contract
         fields = [
-            'id', 'name', 'file', 'contract_number', 'contract_sides',
+            'id', 'name', 'file', 'status', 'contract_number', 'contract_sides',
         ]

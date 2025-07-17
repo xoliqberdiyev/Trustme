@@ -3,6 +3,8 @@ from django.contrib.auth import get_user_model
 from celery import shared_task
 
 from core.apps.contracts.models.contract import ContractSide, Contract, ContractSignature
+from core.services.sms_via_bot import send_sms_code
+
 
 @shared_task
 def create_contract_side(data):
@@ -11,7 +13,7 @@ def create_contract_side(data):
     contract = Contract.objects.get(id=data['contract_id'])
     user = User.objects.get(phone=data['phone'])
 
-    ContractSide.objects.create(
+    contract_side = ContractSide.objects.create(
         full_name=data.get('full_name'),
         indentification=data.get('indentification'),
         position=data.get('position'),
@@ -23,5 +25,7 @@ def create_contract_side(data):
 
     ContractSignature.objects.create(
         contract=contract,
-        user=user,
+        contract_side=contract_side,
     )
+
+

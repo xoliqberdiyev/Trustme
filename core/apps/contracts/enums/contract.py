@@ -8,5 +8,6 @@ STATUS = (
     ('created', 'created',),
     ('signed_company', 'signed by company',),
     ('signed_customer', 'signed by customer',),
-    ('cancelled', 'cancelled')
+    ('contract_signed', 'contract signed'),
+    ('cancelled', 'cancelled'),
 )
