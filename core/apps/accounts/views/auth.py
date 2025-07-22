@@ -1,7 +1,6 @@
 from django.contrib.auth import get_user_model
-from django.utils import timezone
 
-from rest_framework import generics, status, views
+from rest_framework import generics, status
 from rest_framework.response import Response
 
 from rest_framework_simplejwt.tokens import RefreshToken
@@ -10,6 +9,7 @@ from core.apps.accounts.serializers import auth as auth_serializer
 from core.apps.accounts.models.verification_code import VerificationCode
 from core.apps.accounts.cache.user import cache_user_credentials, get_user_creadentials
 from core.apps.accounts.tasks import user as user_tasks
+from core.apps.accounts.utils.response import success_message, error_message
 
 User = get_user_model()
 
@@ -39,14 +39,8 @@ class RegisterApiView(generics.GenericAPIView):
             data = serializer.validated_data
             cache_user_credentials(data['phone'], data['password'], 300)
             user_tasks.create_and_send_sms_code.delay(data['phone'])
-            return Response(
-                {'success': True, "message": "code send"},
-                status=status.HTTP_200_OK
-            )
-        return Response(
-            {'success': True, "message": serializer.errors},
-            status=status.HTTP_400_BAD_REQUEST
-        )
+            return success_message("code is send", 200)
+        return error_message(serializer.errors, 400)
 
 
 class ConfirUserApiView(generics.GenericAPIView):
@@ -61,10 +55,7 @@ class ConfirUserApiView(generics.GenericAPIView):
             confirmation = serializer.validated_data.get('confirmation')
             data = get_user_creadentials(phone)
             if not data:
-                return Response(
-                    {'success': True, "message": 'not found'},
-                    status=status.HTTP_404_NOT_FOUND
-                )
+                return error_message("Not found", 404)
             user = User.objects.create_user(phone=data['phone'], password=data['password'])
             confirmation.is_verify = True
             confirmation.save()
@@ -73,7 +64,7 @@ class ConfirUserApiView(generics.GenericAPIView):
                 {"access": str(token.access_token), "refresh": str(token)},
                 status=status.HTTP_202_ACCEPTED
             ) 
-        return Response({"success": False, "message": serializer.errors}, status=status.HTTP_400_BAD_REQUEST)
+        return error_message(serializer.errors, 400)
 
 
 class ChoiceUserRoleApiView(generics.GenericAPIView):
@@ -87,8 +78,8 @@ class ChoiceUserRoleApiView(generics.GenericAPIView):
             role = serializer.validated_data.get('role')
             user.role = role
             user.save()
-            return Response({'success': True, 'message': "role is selected"}, status=status.HTTP_200_OK)
-        return Response({'success': False, "message": serializer.errors}, status=status.HTTP_400_BAD_REQUEST)
+            return success_message('role choices', 200)
+        return error_message(serializer.errors, 400)
 
 
 class CompliteUserProfileApiView(generics.GenericAPIView):
@@ -101,6 +92,6 @@ class CompliteUserProfileApiView(generics.GenericAPIView):
             serializer = self.serializer_class(data=request.data, instance=user)
             if serializer.is_valid():
                 serializer.save()
-                return Response({'success': True, "message": "Ok"}, status=status.HTTP_200_OK)
-            return Response({'success': False, 'message': serializer.errors}, status=status.HTTP_400_BAD_REQUEST)
-        return Response({'success': False, "message": "User not found"}, status=status.HTTP_404_NOT_FOUND)
+                return success_message("profile complited", 200)
+            return error_message(serializer.errors, 400)
+        return error_message("User not found", 404)
