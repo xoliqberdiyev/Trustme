@@ -30,7 +30,7 @@ class User(BaseModel, AbstractUser):
         expiration_time = timezone.now() + datetime.timedelta(minutes=2)
         VerificationCode.objects.create(
             code=code,
-            user=self,
+            user=self.phone,
             expiration_time=expiration_time,
         )
         return code

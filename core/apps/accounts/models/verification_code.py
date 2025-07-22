@@ -1,10 +1,12 @@
 from django.db import models 
 
 from core.apps.shared.models.base import BaseModel
+from core.apps.accounts.validators.user import phone_regex
+
 
 class VerificationCode(BaseModel):
     code = models.PositiveIntegerField()
-    user = models.ForeignKey('User', on_delete=models.CASCADE, related_name='verification_codes')
+    phone = models.CharField(max_length=13, validators=[phone_regex])
     is_expired = models.BooleanField(default=False)
     is_verify = models.BooleanField(default=False)
     expiration_time = models.TimeField(null=True, blank=True)
