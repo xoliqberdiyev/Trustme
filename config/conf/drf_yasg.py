@@ -5,3 +5,4 @@ SWAGGER_SETTINGS = {
         }
     },
 }
+SWAGGER_USE_COMPAT_RENDERERS = False
