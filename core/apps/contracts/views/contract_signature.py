@@ -4,6 +4,7 @@ from rest_framework.response import Response
 from core.apps.contracts.models.contract import ContractSignature, ContractSignatureCode
 from core.apps.contracts.serializers.contract_signature import ContractSignatureSerializer
 from core.apps.contracts.tasks.contract_signature import send_contract_signature_code
+from core.apps.shared.utils.response import error_message, success_message
 
 
 class SendContractSignatureCodeApiView(views.APIView):
@@ -12,7 +13,7 @@ class SendContractSignatureCodeApiView(views.APIView):
     def get(self, request, signature_id):
         # TODO: create and send code with celery in backgroud
         send_contract_signature_code.delay(signature_id)
-        return Response({"success": True, "message": "code send"}, status=status.HTTP_200_OK)
+        return success_message("code send", 200)
 
 
 class SigningContractApiView(generics.GenericAPIView):
@@ -40,5 +41,5 @@ class SigningContractApiView(generics.GenericAPIView):
             contract_signature.status = 'signed'
             contract_signature.save()
             contract.save()
-            return Response({'success': True, 'message': 'contract is signed'}, status=status.HTTP_200_OK) 
-        return Response({'success': False, 'message': serializer.errors}, status=status.HTTP_400_BAD_REQUEST)
+            return success_message('contract signed', 200)
+        return error_message(serializer.errors, 400)

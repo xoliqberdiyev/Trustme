@@ -3,6 +3,8 @@ from rest_framework.response import Response
 
 from core.apps.contracts.serializers import contract as contract_serializer
 from core.apps.contracts.models.contract import Contract
+from core.apps.shared.utils.response import success_message, error_message
+
 
 
 class ContractCreateApiView(generics.CreateAPIView):
@@ -18,12 +20,7 @@ class ContractCreateApiView(generics.CreateAPIView):
         serializer = self.get_serializer(data=request.data)
         serializer.is_valid(raise_exception=True)
         contract = serializer.save()
-
-        return Response({
-            "success": True,
-            "message": "Contract successfully created",
-            "contract_id": str(contract)
-        }, status=status.HTTP_201_CREATED)
+        return success_message(str(contract.id), 201)
 
 
 class ContractListApiView(generics.ListAPIView):
@@ -38,6 +35,6 @@ class ContractDetailApiView(views.APIView):
     def get(self, request, id):
         contract = Contract.objects.filter(id=id, contract_sides__user=request.user).prefetch_related('contract_sides').first()
         if not contract:
-            return Response({'success': False, "message": 'contract not found'}, status=404)
+            return error_message("Contract not found", 404)
         serializer = contract_serializer.ContractDetailSerializer(contract)
         return Response(serializer.data, status=200)

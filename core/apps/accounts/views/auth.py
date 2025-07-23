@@ -9,7 +9,7 @@ from core.apps.accounts.serializers import auth as auth_serializer
 from core.apps.accounts.models.verification_code import VerificationCode
 from core.apps.accounts.cache.user import cache_user_credentials, get_user_creadentials
 from core.apps.accounts.tasks import user as user_tasks
-from core.apps.accounts.utils.response import success_message, error_message
+from core.apps.shared.utils.response import success_message, error_message
 
 User = get_user_model()
 
