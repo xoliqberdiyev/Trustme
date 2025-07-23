@@ -20,7 +20,7 @@ class ContractCreateApiView(generics.CreateAPIView):
         serializer = self.get_serializer(data=request.data)
         serializer.is_valid(raise_exception=True)
         contract = serializer.save()
-        return success_message(str(contract.id), 201)
+        return success_message(str(contract), 201)
 
 
 class ContractListApiView(generics.ListAPIView):
@@ -37,4 +37,4 @@ class ContractDetailApiView(views.APIView):
         if not contract:
             return error_message("Contract not found", 404)
         serializer = contract_serializer.ContractDetailSerializer(contract)
-        return Response(serializer.data, status=200)
+        return Response(serializer.data, status=200)    

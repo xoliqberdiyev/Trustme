@@ -36,4 +36,4 @@ class ContractSideListSerializer(serializers.ModelSerializer):
 
     def get_contract_signature(self, obj):
         contract_signature = obj.contract_signatures
-        return ContractSignatureListSerializer(contract_signature).data 
+        return ContractSignatureListSerializer(contract_signature).data if contract_signature else None
