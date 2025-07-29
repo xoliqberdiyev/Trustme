@@ -8,12 +8,11 @@ r = redis.StrictRedis.from_url(env.str('REDIS_URL'))
 
 
 def cache_user_credentials(phone_number, password, time):
-    hashed_password = make_password(password)
     key = f"user_credentials:{phone_number}"
 
     r.hmset(key, {
         "phone": phone_number,
-        "password": hashed_password
+        "password": password
     })
 
     r.expire(key, time)

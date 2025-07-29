@@ -56,7 +56,9 @@ class ConfirUserApiView(generics.GenericAPIView):
             data = get_user_creadentials(phone)
             if not data:
                 return error_message("Not found", 404)
-            user = User.objects.create_user(phone=data['phone'], password=data['password'])
+            user = User.objects.create_user(phone=data['phone'])
+            user.set_password(data['password'])
+            user.save()
             confirmation.is_verify = True
             confirmation.save()
             token = RefreshToken.for_user(user)

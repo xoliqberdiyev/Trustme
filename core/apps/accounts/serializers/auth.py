@@ -19,9 +19,8 @@ class LoginSerializer(serializers.Serializer):
             user = User.objects.get(phone=data.get('phone'))
         except User.DoesNotExist:
             raise serializers.ValidationError({'detail': 'User not found'})
-        else:
-            if not user.check_password(data.get('password')):
-                raise serializers.ValidationError({'detail': 'User not found'})
+        if not user.check_password(data.get('password')):
+            raise serializers.ValidationError({'detail': 'User not found, password'})
         data['user'] = user
         return data
     
