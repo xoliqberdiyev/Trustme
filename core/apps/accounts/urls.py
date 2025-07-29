@@ -1,6 +1,6 @@
 from django.urls import path, include
 
-from core.apps.accounts.views.auth import LoginApiView, RegisterApiView, ConfirUserApiView, ChoiceUserRoleApiView, CompliteUserProfileApiView
+from core.apps.accounts.views.auth import LoginApiView, RegisterApiView, ConfirUserApiView, ChoiceUserRoleApiView
 
 urlpatterns = [
     path('auth/', include(
@@ -9,7 +9,6 @@ urlpatterns = [
             path('register/', RegisterApiView.as_view(), name='register'),
             path('confirm_user/', ConfirUserApiView.as_view(), name='confirm-user'),
             path('choise_user_role/', ChoiceUserRoleApiView.as_view(), name='choise-user-role'),
-            path('complite_user_profile/', CompliteUserProfileApiView.as_view(), name='complite-user-profile'),
         ]
     ))
 ]

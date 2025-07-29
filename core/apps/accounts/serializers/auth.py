@@ -28,12 +28,20 @@ class LoginSerializer(serializers.Serializer):
 class RegisterSerializer(serializers.Serializer):
     phone = serializers.CharField()
     password = serializers.CharField()
+    first_name = serializers.CharField()
+    last_name = serializers.CharField()
+    email = serializers.EmailField()
 
     def validate_phone(self, value):
         if User.objects.filter(phone=value).exists():
-            raise serializers.ValidationError("User exists")
+            raise serializers.ValidationError("User exists with this phone")
         return value
-        
+
+    def validate_email(self, value):
+        if User.objects.filter(email=value).exists():
+            raise serializers.ValidationError("User exists with this email")        
+        return value
+
 
 class ConfirmUserSerializer(serializers.Serializer):
     phone = serializers.CharField()
@@ -53,23 +61,3 @@ class ConfirmUserSerializer(serializers.Serializer):
 
 class ChoiseRoleSerializer(serializers.Serializer):
     role = serializers.ChoiceField(choices=ROLE_CHOICES)
-
-
-class CompliteUserProfileSerializer(serializers.Serializer):
-    first_name = serializers.CharField()
-    last_name = serializers.CharField()
-    email = serializers.EmailField()
-
-    def validate(self, data):
-        user = User.objects.filter(email=data.get('email')).first()
-        if user:
-            raise serializers.ValidationError({'detail': "User with this email already exists"})
-        return data
-
-    def update(self, instance, validated_data):
-        with transaction.atomic():
-            instance.first_name = validated_data.get('first_name')
-            instance.last_name = validated_data.get('last_name')
-            instance.email = validated_data.get('email')
-            instance.save()
-            return instance

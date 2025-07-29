@@ -37,7 +37,10 @@ class RegisterApiView(generics.GenericAPIView):
         serializer = self.serializer_class(data=request.data)
         if serializer.is_valid():
             data = serializer.validated_data
-            cache_user_credentials(data['phone'], data['password'], 300)
+            cache_user_credentials(
+                data['phone'], data['password'], data['first_name'],
+                data['last_name'], data['email'], 300
+            )
             user_tasks.create_and_send_sms_code.delay(data['phone'])
             return success_message("code is send", 200)
         return error_message(serializer.errors, 400)
@@ -56,7 +59,10 @@ class ConfirUserApiView(generics.GenericAPIView):
             data = get_user_creadentials(phone)
             if not data:
                 return error_message("Not found", 404)
-            user = User.objects.create_user(phone=data['phone'])
+            user = User.objects.create_user(
+                phone=data['phone'], first_name=data['first_name'],
+                last_name=data['last_name'], email=data['email']
+            )
             user.set_password(data['password'])
             user.save()
             confirmation.is_verify = True
@@ -82,18 +88,3 @@ class ChoiceUserRoleApiView(generics.GenericAPIView):
             user.save()
             return success_message('role choices', 200)
         return error_message(serializer.errors, 400)
-
-
-class CompliteUserProfileApiView(generics.GenericAPIView):
-    serializer_class = auth_serializer.CompliteUserProfileSerializer
-    queryset = User.objects.all()
-
-    def put(self, request):
-        user = request.user
-        if user:
-            serializer = self.serializer_class(data=request.data, instance=user)
-            if serializer.is_valid():
-                serializer.save()
-                return success_message("profile complited", 200)
-            return error_message(serializer.errors, 400)
-        return error_message("User not found", 404)

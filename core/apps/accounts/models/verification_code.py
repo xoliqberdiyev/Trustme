@@ -12,7 +12,7 @@ class VerificationCode(BaseModel):
     expiration_time = models.TimeField(null=True, blank=True)
 
     def __str__(self):
-        return f'{self.user.phone} - {self.code}'
+        return f'{self.phone} - {self.code}'
 
     class Meta:
         verbose_name = 'Verification Code'
