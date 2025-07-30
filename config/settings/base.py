@@ -46,6 +46,7 @@ PACKAGES = [
     'rest_framework',
     'rest_framework_simplejwt',
     'cacheops',
+    'corsheaders',
 ]
 
 INSTALLED_APPS = []
@@ -58,6 +59,7 @@ INSTALLED_APPS += APPS
 MIDDLEWARE = [
     'django.middleware.security.SecurityMiddleware',
     'django.contrib.sessions.middleware.SessionMiddleware',
+    'corsheaders.middleware.CorsMiddleware',
     'django.middleware.common.CommonMiddleware',
     'django.middleware.csrf.CsrfViewMiddleware',
     'django.contrib.auth.middleware.AuthenticationMiddleware',
@@ -152,3 +154,12 @@ from config.conf.simplejwt import *
 from config.conf.celery import *
 from config.conf.redis import *
 # from config.conf.unfold import *
+
+
+CORS_ALLOWED_ORIGINS = [
+    "http://localhost:3000",
+]
+
+CSRF_TRUSTED_ORIGINS = [
+    "http://trustme.felixits.uz"
+]

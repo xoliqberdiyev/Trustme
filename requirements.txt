@@ -15,3 +15,4 @@ pytest-django
 django-cacheops==7.2
 django-unfold==0.62.0
 drf_yasg==1.21.10
+django-cors-headers==4.7.0
