@@ -25,6 +25,11 @@ class ContractSideCreateSerializer(serializers.Serializer):
         return data
     
 
+
+class ContractSideListCreateSerializer(serializers.Serializer):
+    contract_side = ContractSideCreateSerializer(many=True)
+
+
 class ContractSideListSerializer(serializers.ModelSerializer):
     contract_signature = serializers.SerializerMethodField(method_name='get_contract_signature')
 

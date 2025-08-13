@@ -27,7 +27,7 @@ services:
     build: 
       context: .
       dockerfile: ./docker/Dockerfile.web
-    restart: always
+    # restart: always
     command: sh resources/scripts/entrypoint.sh
     environment:
       - PYTHONPYCACHEPREFIX=/var/cache/pycache
@@ -54,13 +54,13 @@ services:
       - web
     networks:
       - trustme
-    restart: always
+    # restart: always
 
   db:
     image: postgres:16
     networks:
       - trustme
-    restart: always
+    # restart: always
     environment:
       POSTGRES_DB: ${DB_NAME}
       POSTGRES_USER: ${DB_USER}
@@ -76,7 +76,7 @@ services:
     restart: always
     image: redis:latest
     ports:
-      - 6379:6379
+      - 6380:6379
     
   bot:
     build: 
@@ -84,4 +84,4 @@ services:
       dockerfile: Dockerfile
     volumes:
       - /home/behruz/bots/send-verification-code:/bot
-    restart: unless-stopped
+    # restart: unless-stopped

@@ -1,25 +1,13 @@
-FROM python:3.12
+FROM python:3.12-alpine
+
+ENV PYTHONPYCACHEPREFIX=/dev/null
+
+RUN apk update && apk add git gettext 
 
 WORKDIR /code
 
-RUN apt-get update && \
-    apt-get install -y \
-    gdal-bin \
-    libgdal-dev \
-    python3-gdal \
-    libgeos-dev \
-    libproj-dev \
-    g++ \
-    make \
-    wkhtmltopdf && \
-    apt-get clean && \
-    rm -rf /var/lib/apt/lists/*
+COPY requirements.txt /code/requirements.txt
 
+RUN --mount=type=cache,target=/root/.cache/pip pip install -r requirements.txt
 
-RUN gdalinfo --version
-
-COPY . .
-
-RUN --mount=type=cache,target=/root/.cache/pip python3 -m pip install -r requirements.txt
-
-CMD ["sh", "./resources/scripts/entrypoint.sh"]
+CMD ["sh", "./entrypoint.sh"]

@@ -14,7 +14,7 @@ urlpatterns = [
         ]
     )),
     path('contract_side/', include([
-            path('create/', contract_side_views.ConstartSideCreateApiView.as_view(), name='contract-side-create'),
+            path('create/', contract_side_views.ContractSideCreateApiView.as_view(), name='contract-side-create'),
         ]
     )),
     path('contract_signature/', include(
