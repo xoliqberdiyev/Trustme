@@ -61,3 +61,9 @@ class ConfirmUserSerializer(serializers.Serializer):
 
 class ChoiseRoleSerializer(serializers.Serializer):
     role = serializers.ChoiceField(choices=ROLE_CHOICES)
+
+
+class UserPhoneListSerializer(serializers.ModelSerializer):
+    class Meta:
+        model = User
+        fields = ['id', 'phone']

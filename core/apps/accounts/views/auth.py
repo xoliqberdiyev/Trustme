@@ -88,3 +88,13 @@ class ChoiceUserRoleApiView(generics.GenericAPIView):
             user.save()
             return success_message('role choices', 200)
         return error_message(serializer.errors, 400)
+    
+
+class SearchUserPhoneApiView(generics.GenericAPIView):
+    serializer_class = None
+    queryset = User.objects.all()
+
+    def get(self, request, number):
+        users = User.objects.filter(phone__istartswith=number)
+        serializer = auth_serializer.UserPhoneListSerializer(users, many=True)
+        return Response(serializer.data, status=200)
