@@ -51,7 +51,7 @@ class ConfirmUserSerializer(serializers.Serializer):
         phone = data['phone']
         code = data['code']
         confirmation = VerificationCode.objects.filter(code=code, phone=phone).first()
-        if confirmation.is_verify:
+        if confirmation and confirmation.is_verify:
             raise serializers.ValidationError("Code is verified")
         if confirmation.is_expired or confirmation.expiration_time < timezone.now().time():
             raise serializers.ValidationError("Code is expired")
