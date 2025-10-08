@@ -54,13 +54,13 @@ services:
       - web
     networks:
       - trustme
-    # restart: always
+    restart: always
 
   db:
     image: postgres:16
     networks:
       - trustme
-    # restart: always
+    restart: always
     environment:
       POSTGRES_DB: ${DB_NAME}
       POSTGRES_USER: ${DB_USER}
@@ -78,10 +78,10 @@ services:
     ports:
       - 6380:6379
     
-  bot:
-    build: 
-      context: /home/behruz/bots/send-verification-code
-      dockerfile: Dockerfile
-    volumes:
-      - /home/behruz/bots/send-verification-code:/bot
+  # bot:
+  #   build: 
+  #     context: /home/behruz/bots/send-verification-code
+  #     dockerfile: Dockerfile
+  #   volumes:
+  #     - /home/behruz/bots/send-verification-code:/bot
     # restart: unless-stopped
