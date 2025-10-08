@@ -164,3 +164,6 @@ CORS_ALLOWED_ORIGINS = [
 CSRF_TRUSTED_ORIGINS = [
     "http://trustme.felixits.uz"
 ]
+
+SECURE_PROXY_SSL_HEADER = ('HTTP_X_FORWARDED_PROTO', env.str("SWAGGER_PROTOCOL", 'https'))
+
