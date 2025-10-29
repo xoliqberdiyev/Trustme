@@ -41,7 +41,7 @@ class RegisterApiView(generics.GenericAPIView):
                 data['phone'], data['password'], data['first_name'],
                 data['last_name'], data['email'], 300
             )
-            user_tasks.create_and_send_sms_code.delay(data['phone'])
+            user_tasks.create_and_send_sms_code.delay(data['phone'], type='auth')
             return success_message("code is send", 200)
         return error_message(serializer.errors, 400)
 
