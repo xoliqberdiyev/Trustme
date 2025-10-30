@@ -17,7 +17,7 @@ class SendCodeSerializer(serializers.Serializer):
         return data
 
 
-class ConfirmPasswordSerializer(serializers.Serializer):
+class   ConfirmPasswordSerializer(serializers.Serializer):
     code = serializers.IntegerField()
     phone = serializers.CharField()
 

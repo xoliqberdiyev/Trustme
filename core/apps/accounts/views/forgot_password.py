@@ -27,7 +27,11 @@ class ConfirmCodeApiView(generics.GenericAPIView):
     def post(self, request):
         serializer = self.serializer_class(data=request.data)
         if serializer.is_valid(raise_exception=True):
-            serializer.save()
+            data = serializer.validated_data
+            confirmation = data.get('confirmation')
+            if confirmation:
+                confirmation.is_verify = True
+                confirmation.save()
             return Response({"success": True, "message": "tasdiqlandi"})
         return Response({"success": True, "message": serializer.errors})
 
