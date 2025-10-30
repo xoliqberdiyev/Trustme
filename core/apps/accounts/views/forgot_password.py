@@ -44,6 +44,9 @@ class ResetPasswordApiView(generics.GenericAPIView):
     def post(self, request):
         serializer = self.serializer_class(data=request.data)
         if serializer.is_valid(raise_exception=True):
-            serializer.save()
+            data = serializer.validated_data
+            user = data['user']
+            user.set_password(data.get('new_password'))
+            user.save()
             return Response({"success": True, "message": "ozgartirildi"})
         return Response({"success": True, "message": serializer.errors})
