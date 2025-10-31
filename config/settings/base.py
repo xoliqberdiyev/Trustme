@@ -159,6 +159,7 @@ from config.conf.redis import *
 CORS_ALLOWED_ORIGINS = [
     "http://localhost:3000",
     "https://docu-sheck-view.vercel.app",
+    "https://tez-imzo.vercel.app",
 ]
 
 CSRF_TRUSTED_ORIGINS = [
