@@ -6,4 +6,4 @@ class ContractsConfig(AppConfig):
     name = 'core.apps.contracts'
 
     def ready(self):
-        import core.apps.contracts.admins.contract
+        import core.apps.contracts.admins

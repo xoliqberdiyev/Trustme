@@ -6,6 +6,7 @@ from django.contrib.auth import get_user_model
 from django.utils import timezone 
 
 from core.apps.shared.models.base import BaseModel
+from core.apps.contracts.models.folder import Folder
 from core.apps.contracts.enums.contract import SIDES, STATUS
 from core.apps.contracts.enums.contract_side import ROLE
 from core.apps.contracts.enums.contract_signature import SIGNATURE_TYPE, SIGNATURE_STATUS
@@ -24,7 +25,8 @@ class Contract(BaseModel):
     add_folder = models.BooleanField(default=False)
     add_notification = models.BooleanField(default=False)
 
-    company = models.ForeignKey(get_user_model(), on_delete=models.CASCADE, related_name='c')
+    company = models.ForeignKey(get_user_model(), on_delete=models.CASCADE, related_name='contracts')
+    folder = models.ForeignKey(Folder, on_delete=models.SET_NULL, null=True, blank=True, related_name='countracts')
 
     def __str__(self):
         return f'{self.name}'

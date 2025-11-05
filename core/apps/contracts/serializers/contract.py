@@ -2,7 +2,7 @@ from django.db import transaction
 
 from rest_framework import serializers
 
-from core.apps.contracts.models.contract import Contract
+from core.apps.contracts.models.contract import Contract, Folder
 from core.apps.contracts.serializers.contract_side import ContractSideCreateSerializer, ContractSideListSerializer
 
 
@@ -15,6 +15,15 @@ class ContractCreateSerializer(serializers.Serializer):
     attach_file = serializers.BooleanField()
     add_folder = serializers.BooleanField() 
     add_notification = serializers.BooleanField()
+    folder_id = serializers.UUIDField(required=False)
+
+    def validate(self, data):
+        if data.get('folder_id'):
+            folder = Folder.objects.filter(id=data.get('folder_id')).first()
+            if not folder:
+                raise serializers.ValidationError("Folder not found")
+            data['folder'] = folder
+        return data
 
     def create(self, validated_data):
         with transaction.atomic():
@@ -28,7 +37,8 @@ class ContractCreateSerializer(serializers.Serializer):
                 attach_file=validated_data.pop('attach_file'),
                 add_folder=validated_data.pop('add_folder'),
                 add_notification=validated_data.pop('add_notification'),
-                company=user
+                company=user,
+                folder=validated_data.get('folder'),
             )
             return contract.id
 
