@@ -2,6 +2,7 @@ from django.urls import path, include
 
 from core.apps.accounts.views.auth import LoginApiView, RegisterApiView, ConfirUserApiView, ChoiceUserRoleApiView, SearchUserPhoneApiView
 from core.apps.accounts.views.forgot_password import ConfirmCodeApiView, SendCodeApiView, ResetPasswordApiView
+from core.apps.accounts.views.user import UserProfileApiView, UserProfileUpdateApiView
 
 urlpatterns = [
     path('auth/', include(
@@ -15,6 +16,8 @@ urlpatterns = [
     path('user/', include(
         [
             path('<str:number>/search/', SearchUserPhoneApiView.as_view()),
+            path('profile/', UserProfileApiView.as_view()),
+            path('profile/update/', UserProfileUpdateApiView.as_view()),
         ]
     )),
     path('forgot_password/', include(
