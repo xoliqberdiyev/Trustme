@@ -44,3 +44,14 @@ class FolderUpdateApiView(generics.GenericAPIView):
             serializer.save()
             return Response({"message":"Folder tahrirlandi"}, status=200)
         return Response(serializer.errors, status=400)
+
+
+class ContractListApiView(generics.GenericAPIView):
+    serializer_class = serializers.FolderDetailSerializer
+    queryset = Folder.objects.all()
+    permission_classes = [IsAuthenticated]
+
+    def get(self, request, id):
+        folder = get_object_or_404(Folder, id=id, user=request.user)
+        serializer = self.serializer_class(folder)
+        return Response(serializer.data)

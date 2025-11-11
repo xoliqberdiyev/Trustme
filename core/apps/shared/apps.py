@@ -6,4 +6,4 @@ class SharedConfig(AppConfig):
     name = 'core.apps.shared'
 
     def ready(self):
-        import core.apps.shared.admins.folder
+        import core.apps.shared.admins

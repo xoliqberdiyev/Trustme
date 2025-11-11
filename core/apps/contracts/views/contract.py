@@ -1,3 +1,5 @@
+from django.shortcuts import get_object_or_404
+
 from rest_framework import generics, views, status, permissions, parsers
 from rest_framework.response import Response
 
@@ -37,4 +39,18 @@ class ContractDetailApiView(views.APIView):
         if not contract:
             return error_message("Contract not found", 404)
         serializer = contract_serializer.ContractDetailSerializer(contract)
-        return Response(serializer.data, status=200)    
+        return Response(serializer.data, status=200)
+    
+
+class ContractUpdateApiView(generics.GenericAPIView):
+    serializer_class = contract_serializer.ContractUpdateSerializer
+    queryset = Contract.objects.all()
+    permission_classes = [permissions.IsAuthenticated]
+
+    def patch(self, request, id):
+        contract = get_object_or_404(Contract, id=id)
+        serializer = self.serializer_class(data=request.data, instance=contract)
+        if serializer.is_valid(raise_exception=True):
+            serializer.save()
+            return Response({"success": True, 'message': 'updated'}, status=200)
+        return Response({'success': False, 'message': serializer.errors}, status=400)

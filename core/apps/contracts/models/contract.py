@@ -26,7 +26,7 @@ class Contract(BaseModel):
     add_notification = models.BooleanField(default=False)
 
     company = models.ForeignKey(get_user_model(), on_delete=models.CASCADE, related_name='contracts')
-    folder = models.ForeignKey(Folder, on_delete=models.SET_NULL, null=True, blank=True, related_name='countracts')
+    folder = models.ForeignKey(Folder, on_delete=models.SET_NULL, null=True, blank=True, related_name='contracts')
 
     def __str__(self):
         return f'{self.name}'

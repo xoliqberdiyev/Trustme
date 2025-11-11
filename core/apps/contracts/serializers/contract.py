@@ -40,6 +40,7 @@ class ContractCreateSerializer(serializers.Serializer):
                 company=user,
                 folder=validated_data.get('folder'),
             )
+            
             return contract.id
 
 
@@ -59,3 +60,14 @@ class ContractDetailSerializer(serializers.ModelSerializer):
         fields = [
             'id', 'name', 'file', 'status', 'contract_number', 'contract_sides',
         ]
+
+
+class ContractUpdateSerializer(serializers.ModelSerializer):
+    class Meta:
+        model = Contract
+        fields = ['folder']
+
+    def update(self, instance, validated_data):
+        instance.folder = validated_data.get('folder', instance.folder)
+        instance.save()
+        return instance

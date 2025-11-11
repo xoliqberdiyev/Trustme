@@ -1,6 +1,7 @@
 from rest_framework import serializers
 
 from core.apps.contracts.models import Folder
+from core.apps.contracts.serializers.contract import ContractListSerializer
 
 
 class FolderListSerializer(serializers.ModelSerializer):
@@ -29,3 +30,13 @@ class FolderSerializer(serializers.ModelSerializer):
         instance.name = validated_data.get('name', instance.name)
         instance.save()
         return instance
+    
+
+class FolderDetailSerializer(serializers.ModelSerializer):
+    contracts = ContractListSerializer(many=True)
+
+    class Meta:
+        model = Folder
+        fields = [
+            'id', 'name', 'contracts'
+        ]

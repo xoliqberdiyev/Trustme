@@ -11,6 +11,7 @@ urlpatterns = [
             path('create/', contract_views.ContractCreateApiView.as_view(), name='create-contract'),
             path('list/', contract_views.ContractListApiView.as_view(), name='list-contract'),
             path('<uuid:id>/', contract_views.ContractDetailApiView.as_view(), name='detail-contract'),
+            path('<uuid:id>/update/', contract_views.ContractUpdateApiView.as_view()),
         ]
     )),
     path('contract_side/', include([
@@ -28,6 +29,7 @@ urlpatterns = [
             path('list/', folder_views.FolderListApiView.as_view()),
             path('create/', folder_views.FolderCreateApiView.as_view()),
             path('<uuid:folder_id>/update/', folder_views.FolderUpdateApiView.as_view()),
+            path('<uuid:id>/contracts/', folder_views.ContractListApiView.as_view()),
         ]
     )),
 ]

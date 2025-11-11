@@ -27,6 +27,7 @@ urlpatterns = [
         [
             path('', include('core.apps.accounts.urls')),
             path('contracts/', include('core.apps.contracts.urls')),
+            path('shared/', include('core.apps.shared.urls')),
         ]
     )),
 ]
