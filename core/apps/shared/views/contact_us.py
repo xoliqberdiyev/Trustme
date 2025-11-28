@@ -9,7 +9,7 @@ from core.apps.shared.models import ContactUs
 
 class ContactUsApiView(generics.GenericAPIView):
     permission_classes = [IsAuthenticated]
-    queryset = ContactUs.objects.first()
+    queryset = ContactUs.objects.all()
     serializer_class = ContactUsSerializer
 
     def get(self, request):
