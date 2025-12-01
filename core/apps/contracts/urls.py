@@ -5,6 +5,7 @@ from core.apps.contracts.views import contract_side as contract_side_views
 from core.apps.contracts.views import contract_signature as contract_signature_views
 from core.apps.contracts.views import folder as folder_views
 
+
 urlpatterns = [
     path('contract/', include(
         [
@@ -12,6 +13,7 @@ urlpatterns = [
             path('list/', contract_views.ContractListApiView.as_view(), name='list-contract'),
             path('<uuid:id>/', contract_views.ContractDetailApiView.as_view(), name='detail-contract'),
             path('<uuid:id>/update/', contract_views.ContractUpdateApiView.as_view()),
+            path('<uuid:id>/delete/', contract_views.ContractDeleteApiView.as_view()),
         ]
     )),
     path('contract_side/', include([

@@ -54,3 +54,12 @@ class ContractUpdateApiView(generics.GenericAPIView):
             serializer.save()
             return Response({"success": True, 'message': 'updated'}, status=200)
         return Response({'success': False, 'message': serializer.errors}, status=400)
+
+
+class ContractDeleteApiView(views.APIView):
+    permission_classes = [permissions.IsAuthenticated]
+
+    def delete(self, request, id):
+        contract = get_object_or_404(Contract, id=id)
+        contract.delete()
+        return Response({'success': True, 'message': "deleted"}, status=204)
