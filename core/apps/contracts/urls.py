@@ -32,6 +32,7 @@ urlpatterns = [
             path('create/', folder_views.FolderCreateApiView.as_view()),
             path('<uuid:folder_id>/update/', folder_views.FolderUpdateApiView.as_view()),
             path('<uuid:id>/contracts/', folder_views.ContractListApiView.as_view()),
+            path('<uuid:id>/delete/', folder_views.ContractFolderDeleteApiView.as_view()),
         ]
     )),
 ]

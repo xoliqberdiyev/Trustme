@@ -55,3 +55,12 @@ class ContractListApiView(generics.GenericAPIView):
         folder = get_object_or_404(Folder, id=id, user=request.user)
         serializer = self.serializer_class(folder)
         return Response(serializer.data)
+    
+
+class ContractFolderDeleteApiView(views.APIView):
+    permission_classes = [IsAuthenticated]
+    
+    def delete(self, request, id):
+        folder = get_object_or_404(Folder, id=id)
+        folder.delete()
+        return Response(status=204)
