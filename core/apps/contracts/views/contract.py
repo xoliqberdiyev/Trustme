@@ -2,6 +2,7 @@ from django.shortcuts import get_object_or_404
 
 from rest_framework import generics, views, status, permissions, parsers
 from rest_framework.response import Response
+from rest_framework.filters import SearchFilter
 
 from core.apps.contracts.serializers import contract as contract_serializer
 from core.apps.contracts.models.contract import Contract
@@ -28,6 +29,8 @@ class ContractCreateApiView(generics.CreateAPIView):
 class ContractListApiView(generics.ListAPIView):
     serializer_class = contract_serializer.ContractListSerializer
     queryset = Contract.objects.all()
+    filter_backends = [SearchFilter]
+    search_fields = ['name']
 
     def get_queryset(self):
         return Contract.objects.filter(contract_sides__user=self.request.user)
