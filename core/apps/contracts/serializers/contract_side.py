@@ -40,5 +40,7 @@ class ContractSideListSerializer(serializers.ModelSerializer):
         ]
 
     def get_contract_signature(self, obj):
-        contract_signature = obj.contract_signatures
-        return ContractSignatureListSerializer(contract_signature).data if contract_signature else None
+        signature = getattr(obj, "contract_signatures", None)
+        if signature is None:
+            return None
+        return ContractSignatureListSerializer(signature).data if signature else None

@@ -70,4 +70,4 @@ class ContractUpdateSerializer(serializers.ModelSerializer):
     def update(self, instance, validated_data):
         instance.folder = validated_data.get('folder', instance.folder)
         instance.save()
-        return instance0
+        return instance
